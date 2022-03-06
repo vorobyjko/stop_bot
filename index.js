@@ -11,12 +11,6 @@ const socialNetworks = {
   vk: 'VK'
 }
 
-const doc = new GoogleSpreadsheet('1W2SY5fXBixxwv_S3pUQ5aHEJ-7L7dzpKKiSVTQ88svc');
-await doc.useServiceAccountAuth({
-  client_email: process.env.CLIENT_EMAIL,
-  private_key: process.env.PRIVATE_KEY,
-});
-
 const firstKeyboard = async (ctx) => {
   return ctx.replyWithHTML(
     '<b>Please choose social network</b>',
@@ -79,6 +73,12 @@ confirmStep.hears(/Confirm/, async (ctx) => {
   const canAdd = rows.length === 0 || !rows.some(row => row.link.includes(ctx.message.text));
 
   if (canAdd) {
+    const doc = new GoogleSpreadsheet('1W2SY5fXBixxwv_S3pUQ5aHEJ-7L7dzpKKiSVTQ88svc');
+    await doc.useServiceAccountAuth({
+      client_email: process.env.CLIENT_EMAIL,
+      private_key: process.env.PRIVATE_KEY,
+    });
+
     await sheet.addRow({link: ctx.wizard.state.link})
     await ctx.reply('Done');
     return await ctx.scene.leave();
