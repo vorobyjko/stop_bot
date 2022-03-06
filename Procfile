@@ -1,1 +1,2 @@
-web: node index.js
+heroku container:push worker
+heroku container:release worker
