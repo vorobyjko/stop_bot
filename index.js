@@ -69,7 +69,7 @@ confirmStep.hears(/Confirm/, async (ctx) => {
   const doc = new GoogleSpreadsheet('1W2SY5fXBixxwv_S3pUQ5aHEJ-7L7dzpKKiSVTQ88svc');
   await doc.useServiceAccountAuth({
     client_email: process.env.CLIENT_EMAIL,
-    private_key: process.env.PRIVATE_KEY,
+    private_key: process.env.PRIVATE_KEY.replace(/\\n/g, "\n"),
   });
 
   await ctx.reply('processing...')
