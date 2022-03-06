@@ -1,9 +1,7 @@
 import { Composer, Markup, Scenes, session, Telegraf } from 'telegraf';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import keys from "./keys.json" assert {type: "json"};
 
-const token = "5177190877:AAFZO_7K6IyuwX6gORrXm7REPqLuIdIJzaE"
-if (token === undefined) {
+if (process.env.API_KEY === undefined) {
   throw new Error('BOT_TOKEN must be provided!')
 }
 
@@ -15,8 +13,8 @@ const socialNetworks = {
 
 const doc = new GoogleSpreadsheet('1W2SY5fXBixxwv_S3pUQ5aHEJ-7L7dzpKKiSVTQ88svc');
 await doc.useServiceAccountAuth({
-  client_email: keys.client_email,
-  private_key: keys.private_key,
+  client_email: process.env.CLIENT_EMAIL,
+  private_key: process.env.PRIVATE_KEY,
 });
 
 const firstKeyboard = async (ctx) => {
@@ -129,7 +127,7 @@ Link: <b>${link}</b>`,
 )
 
 
-const bot = new Telegraf(token)
+const bot = new Telegraf(process.env.API_KEY)
 const stage = new Scenes.Stage([superWizard], {
   default: 'super-wizard',
 })
